@@ -47,7 +47,7 @@ router.put("/smsBK/userUpdate/:id", async (req, res) => {
 
 // ? Get Student
 
-router.get("/smsBK/getAll", async (req, res) => {
+router.get("/smsBK/getAllUsers", async (req, res) => {
   try {
     const getUsers = await Users.find().exec();
     return res.status(200).json({

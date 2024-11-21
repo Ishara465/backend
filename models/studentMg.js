@@ -1,42 +1,25 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema; // Import Schema
 
 const studentMGSchema = new mongoose.Schema({
-    stName:{
-        type:String,
-        required:true
-    },
-    pContactNum:{
-        type:String,
-        required:true
-    },
-    stContactNum:{
-        type:String,
-        required:true
-    },
-    dob:{
-        type:Date,
-        required:true
-    },
-    stAddress:{
-        type:String,
-        required:true
-    },
-    stNic:{
-        type:String,
-        required:true
-    },
-    stEmail:{
-        type:String,
-        required:true
-    },
-    stAge:{
-        type:Number,
-        required:true
-    }
-    
-})
+   userId: {
+      type: Schema.Types.ObjectId, // Reference to the User model
+      ref: 'User',
+      required: true,
+   },
+   parent_contact_number: {
+      type: Number,
+      required: true,
+   },
+   student_contact_number: {
+      type: Number,
+      required: true,
+   },
+   address: {
+      type: String,
+      required: true,
+   },
+});
 
-
-const StudentModel = mongoose.model("studentMG",studentMGSchema)
-module.exports =StudentModel;
+const StudentModel = mongoose.model("studentMG", studentMGSchema);
+module.exports = StudentModel;

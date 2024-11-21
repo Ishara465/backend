@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     },
     user_role: {
         type: String,
-        required: true
+        required: true,
+        enum:['student','tutor']
     },
     dob: {
         type: Date,
@@ -27,7 +28,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     age: {
-        type: String,
+        type: Number,
         required: true
     },
     contact_number: {
