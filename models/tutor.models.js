@@ -1,25 +1,25 @@
 const mongoose = require("mongoose");
 
 // Define the schema
-const userSchema = new mongoose.Schema({
-    userId: {
-        type: Number,
-        required: true
-    },
-    user_name: {
+const tutorSchema = new mongoose.Schema({
+    tName: {
         type: String,
         required: true
     },
-    user_role: {
+    tPhoneNumber: {
         type: String,
-        required: true,
-        enum:['student','tutor']
+        required: true
     },
-    dob: {
+    tDob: {
         type: Date,
+        required: true,
+       
+    },
+    tAddress: {
+        type: String,
         required: true
     },
-    nic_number: {
+    tNic: {
         type: String,
         required: true
     },
@@ -27,18 +27,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    age: {
+    tSubject: {
         type: Number,
         required: true
     },
-    contact_number: {
-        type: Number,
-        required: true
-    }
+   
 });
 
 // Create the model
-const User = mongoose.model("User", userSchema);
+const tutor = mongoose.model("tutor", tutorSchema);
 
 // Export the model
-module.exports = User;
+module.exports = tutor;

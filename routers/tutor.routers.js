@@ -1,15 +1,15 @@
 const express = require("express");
-const Users = require("../models/Users");
+const tutor = require("../models/tutor.models");
 
 const router = express.Router();
 
 // *? user Data save
-router.post("/smsBK/UsersSave", async (req, res) => {
+router.post("/smsBK/tutorSave", async (req, res) => {
     try {
-      let UsersSave = new Users(req.body);
-      await UsersSave.save();
+      let tutorSave = new tutor(req.body);
+      await tutorSave.save();
       return res.status(200).json({
-        success: "User is saved successfully",
+        success: "tutor is saved successfully",
       });
     } catch (err) {
       return res.status(400).json({
@@ -20,23 +20,23 @@ router.post("/smsBK/UsersSave", async (req, res) => {
 
   // *? Update user by ID
 
-router.put("/smsBK/userUpdate/:id", async (req, res) => {
+router.put("/smsBK/tutorUpdate/:id", async (req, res) => {
     try {
-      const updatedUser = await Users.findByIdAndUpdate(
+      const updatedTutor = await tutor.findByIdAndUpdate(
         req.params.id,
         { $set: req.body },
         { new: true } // Return the updated document
       );
   
-      if (!updatedUser) {
+      if (!updatedTutor) {
         return res.status(404).json({
-          message: "user not found",
+          message: "tutor not found",
         });
       }
   
       return res.status(200).json({
-        success: "user data updated successfully",
-        updatedUser,
+        success: "tutor data updated successfully",
+        updatedTutor,
       });
     } catch (err) {
       return res.status(400).json({
@@ -45,14 +45,14 @@ router.put("/smsBK/userUpdate/:id", async (req, res) => {
     }
   });
 
-// ? Get Student
+// ? Get Tutor
 
-router.get("/smsBK/getAllUsers", async (req, res) => {
+router.get("/smsBK/getAllTutors", async (req, res) => {
   try {
-    const getUsers = await Users.find().exec();
+    const getTutors = await tutor.find().exec();
     return res.status(200).json({
       success: true,
-      UsersAllData: getUsers,
+      tutorsAllData: getTutors,
     });
   } catch (err) {
     return res.status(400).json({
@@ -62,22 +62,22 @@ router.get("/smsBK/getAllUsers", async (req, res) => {
 });
 
 
-  // *? Delete user by ID
- router.delete("/smsBK/userDelete/:id",async(req,res)=>{
+  // *? Delete tutor by ID
+ router.delete("/smsBK/tutorDelete/:id",async(req,res)=>{
     try{
-        const UserDeleted = await Users.findByIdAndDelete(req.params.id);
-        if(!UserDeleted){
+        const tutorDeleted = await tutor.findByIdAndDelete(req.params.id);
+        if(!tutorDeleted){
             return res.status(404).json({
-                message:"user is not found"
+                message:"tutor is not found"
             });
         }
         return res.json({
-            message:"user delete successfully",
-            UserDeleted,
+            message:"tutor delete successfully",
+            tutorDeleted,
         });
     }catch(err){
         return res.status(400).json({
-            message:"user delete unsuccessful",
+            message:"tutor delete unsuccessful",
             error:err
         });
     }
