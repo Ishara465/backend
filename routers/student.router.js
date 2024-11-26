@@ -6,10 +6,10 @@ const router = express.Router();
 // *? student Data save
 router.post("/smsBK/StudentSave", async (req, res) => {
     try {
-      let studentSave = new studentMG(req.body);
+      let studentSave = new studentMG(req.body,);
       await studentSave.save();
       return res.status(200).json({
-        success: "student is saved successfully",
+        message: "student is saved successfully",
       });
     } catch (err) {
       return res.status(400).json({
@@ -38,7 +38,7 @@ router.put("/smsBK/studentUpdate/:id", async (req, res) => {
       }
   
       return res.status(200).json({
-        success: "student data updated successfully",
+        message: "student data updated successfully",
         updatedUser,
       });
     } catch (err) {
@@ -54,8 +54,9 @@ router.get("/smsBK/getAllStudents", async (req, res) => {
   try {
     const getStudents = await studentMG.find().exec();
     return res.status(200).json({
-      success: true,
-      studentAllData: getStudents,
+      code : '200',
+      message: "student data get sucess",
+      content: getStudents,
     });
   } catch (err) {
     return res.status(400).json({
