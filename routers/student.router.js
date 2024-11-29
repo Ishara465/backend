@@ -19,34 +19,69 @@ router.post("/smsBK/StudentSave", async (req, res) => {
   });
 
 
+ //  Update student by body
+ router.put("/smsBK/studentUpdate", async (req, res) => {
+  try {
+      // Extract the ID from the request body
+      const { stId, ...updateData } = req.body;
 
-
-  // *? Update student by ID
-
-router.put("/smsBK/studentUpdate/:id", async (req, res) => {
-    try {
-      const updatedStudent = await studentMG.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true } // Return the updated document
-      );
-  
-      if (!updatedStudent) {
-        return res.status(404).json({
-          message: "student not found",
-        });
+      if (!stId) {
+          return res.status(400).json({
+              message: "Student stId is required",
+          });
       }
-  
+
+      // Update the student using the stId from the body
+      const updatedStudent = await studentMG.findByIdAndUpdate(
+          stId,
+          { $set: updateData },
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedStudent) {
+          return res.status(404).json({
+              message: "Student not found",
+          });
+      }
+
       return res.status(200).json({
-        message: "student data updated successfully",
-        updatedUser,
+          message: "Student data updated successfully",
+          updatedStudent,
       });
-    } catch (err) {
+  } catch (err) {
       return res.status(400).json({
-        error: err.message,
+          error: err.message,
       });
-    }
-  });
+  }
+});
+
+
+  // *? Update student by stId
+
+// router.put("/smsBK/studentUpdate/:stId", async (req, res) => {
+//     try {
+//       const updatedStudent = await studentMG.findByIdAndUpdate(
+//         req.params.id,
+//         { $set: req.body },
+//         { new: true } // Return the updated document
+//       );
+  
+//       if (!updatedStudent) {
+//         return res.status(404).json({
+//           message: "student not found",
+//         });
+//       }
+  
+//       return res.status(200).json({
+//         message: "student data updated successfully",
+//         updatedUser,
+//       });
+//     } catch (err) {
+//       return res.status(400).json({
+//         error: err.message,
+//       });
+//     }
+//   });
 
 // ? Get Student
 
@@ -54,7 +89,7 @@ router.get("/smsBK/getAllStudents", async (req, res) => {
   try {
     const getStudents = await studentMG.find().exec();
     return res.status(200).json({
-      code : '200',
+      code : res.statusCode,
       message: "student data get sucess",
       content: getStudents,
     });
