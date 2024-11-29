@@ -56,7 +56,7 @@ router.post("/smsBK/StudentSave", async (req, res) => {
 });
 
 
-  // *? Update student by stId
+  // *? Update student by stId  ##########################i
 
 // router.put("/smsBK/studentUpdate/:stId", async (req, res) => {
 //     try {
