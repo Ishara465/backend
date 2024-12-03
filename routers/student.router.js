@@ -90,7 +90,7 @@ router.get("/smsBK/getAllStudents", async (req, res) => {
     const getStudents = await studentMG.find().exec();
     return res.status(200).json({
       code : res.statusCode,
-      message: "student data get sucess",
+      message: "student data get success",
       content: getStudents,
     });
   } catch (err) {
