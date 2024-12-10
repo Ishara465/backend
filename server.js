@@ -1,32 +1,37 @@
-const bodyParser = require("body-parser");//
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
+const connectDB = require('./config/database');
 
-//import routers
+// Import routers
+const userRoutes = require("./routers/Users");
+const classFeeRoutes = require("./routers/classFee"); // Add your classFee routes here
 
-const user = require('./routers/Users')
-
-//app middleware
+// Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
-//use routes
-app.use(user)
+// Use routes
+app.use("/api/v1/users", userRoutes);        // User routes
+app.use("/api/v1/classFee", classFeeRoutes);    // Class fee routes
 
-//connect DB port and link
-const PORT = 8000;
-const DB_URL = "mongodb://127.0.0.1:27017/smsDB";
+// Connect DB
+const PORT = 3001;
+// const DB_URL = "mongodb://127.0.0.1:27017/smsDB";
 
-mongoose
-  .connect(DB_URL)
-  .then(() => {
-    console.log("smsDB is connected");
-  })
-  .catch((err) => console.log("smsDB connection Error", err));
+const start = async () => {
+  try{
+    await connectDB()
+    app.listen(PORT,() => {
+      console.log(`Server is listening on port ${PORT}...`)
+    })
+  } catch(err){
+    console.log(err);
+  }
+};
 
-app.listen(PORT, () => {
-  console.log(`smsApp is running on ${PORT}`);
-});
+start();
+
