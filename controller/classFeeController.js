@@ -16,7 +16,7 @@ const saveClassFee = async (req, res) => {
     }
 };
 
-// *? Update Class Fee by ID
+// *? Update Class Fee by Id
 const updateClassFeeById = async (req, res) => {
     try {
         const updatedClassFee = await ClassFee.findByIdAndUpdate(
