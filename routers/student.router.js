@@ -85,7 +85,7 @@ router.post("/smsBK/StudentSave", async (req, res) => {
 
 // ? Get Student
 
-router.get("/smsBK/getAllStudents", async (req, res) => {
+router.get("/smsBK/getAllStudents", async (req, res) => {  //to get all list
   try {
     const getStudents = await studentMG.find().exec();
     return res.status(200).json({
@@ -122,5 +122,56 @@ router.get("/smsBK/getAllStudents", async (req, res) => {
         });
     }
  });
+
+
+
+ // *? Get Student by ID
+router.get("/smsBK/getStudentById/:id", async (req, res) => {
+  try {
+    const student = await studentMG.findById(req.params.id).exec();
+
+    if (!student) {
+      return res.status(404).json({
+        message: "Student not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Student data retrieved successfully",
+      student,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: err.message,
+    });
+  }
+});
+
+
+// Route to submit today's attendance
+router.post("/smsBK/submitAttendance", async (req, res) => {
+  try {
+    const { className, attendanceDate, students } = req.body;
+
+    if (!className || !attendanceDate || !students.length) {
+      return res.status(400).json({
+        message: "Incomplete attendance data.",
+      });
+    }
+
+    // Save attendance to the database
+    const attendance = new AttendanceModel({ className, attendanceDate, students });
+    await attendance.save();
+
+    return res.status(200).json({
+      message: "Attendance submitted successfully.",
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: err.message,
+    });
+  }
+});
+
 
   module.exports =router;
