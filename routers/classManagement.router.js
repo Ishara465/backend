@@ -19,28 +19,69 @@ router.post("/smsBK/classMgSave", async (req, res) => {
 });
 
 // *? update classes
-router.put("/smsBK/classMgUpdate/:id", async (req, res) => {
+// router.put("/smsBK/classMgUpdate/:id", async (req, res) => {
+//   try {
+//     const updatedClass = await classMg.findByIdAndUpdate(
+//       req.params.id,
+//       { $set: req.body },
+//       { new: true }
+//     );
+//     if (!updatedClass) {
+//       return res.status(404).json({
+//         message: "class not found",
+//       });
+//     }
+//     return res.status(200).json({
+//       message: "class data updated successfully",
+//       updatedClass,
+//     });
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: err.message,
+//     });
+//   }
+// });
+
+// Update class by body
+router.put("/smsBK/classMGtUpdate", async (req, res) => {
   try {
-    const updatedClass = await classMg.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    if (!updatedClass) {
-      return res.status(404).json({
-        message: "class not found",
+      // Extract the ID from the request body
+      const { ctId, ...updateData } = req.body;
+
+      if (!ctId) {
+          return res.status(400).json({
+              message: "class ctId is required",
+          });
+      }
+
+      // Update the class using the ctId from the body
+      const updatedClass = await classMg.findByIdAndUpdate(
+          ctId,
+          { $set: updateData },
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedClass) {
+          return res.status(404).json({
+              message: "class not found",
+          });
+      }
+
+      return res.status(200).json({
+          message: "class data updated successfully",
+          updatedClass, // Use the correct variable here
       });
-    }
-    return res.status(200).json({
-      message: "class data updated successfully",
-      updatedClass,
-    });
   } catch (err) {
-    return res.status(400).json({
-      error: err.message,
-    });
+      return res.status(400).json({
+          error: err.message,
+      });
   }
 });
+
+
+
+
+
 
 //  ? Get classes
 router.get("/smsBK/getAllClassMgs", async (req, res) => {
