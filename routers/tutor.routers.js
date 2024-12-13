@@ -88,8 +88,10 @@ router.get("/smsBK/getAllTutors", async (req, res) => {
   try {
     const getTutors = await tutor.find().exec();
     return res.status(200).json({
-      success: true,
-      tutorsAllData: getTutors,
+      code : res.statusCode,
+      message: "tutor data get success",
+      content: getTutors,
+
     });
   } catch (err) {
     return res.status(400).json({
