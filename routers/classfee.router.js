@@ -37,8 +37,8 @@ router.post("/classFee", async (req, res) => {
 // *? Update Class Fee by ID
 router.put("/classFee/:id", async (req, res) => {
   try {
-    const updatedClassFee = await classFee.findByIdAndUpdate(
-      req.params.id,
+    const updatedClassFee = await classFee.findOneAndUpdate(
+      {sfId:req.params.id},
       { $set: req.body },
       { new: true }
     );
@@ -61,7 +61,7 @@ router.put("/classFee/:id", async (req, res) => {
 // *? Delete Class Fee by ID
 router.delete("/classFee/:id", async (req, res) => {
   try {
-    const classFeeDeleted = await classFee.findByIdAndDelete(req.params.id);
+    const classFeeDeleted = await classFee.findOneAndDelete({sfId:req.params.id});
     if (!classFeeDeleted) {
       return res.status(404).json({
         message: "Class fee not found",

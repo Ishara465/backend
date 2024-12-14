@@ -1,15 +1,19 @@
 const mongoose = require("mongoose");
 
 const classFeeSchema = new mongoose.Schema({
-    studentID: {
-        type: String,
-        required: true
+    sfId:{
+        type: Number,
+        required: true,
+        auto: true
+    },
+    stId: {
+        type: Number,
+        required: true,
     },
     className: {
         type: String,
         required: true
     },
-    
     paymentMonth: {
         type: String,
         required: true
