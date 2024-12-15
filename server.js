@@ -10,16 +10,18 @@ const tutor = require('./routers/tutor.routers')
 const studentMg = require('./routers/student.router')
 const classMg = require('./routers/classManagement.router')
 const eventMg = require('./routers/eventMg.router')
+const classFee = require('./routers/classFee.router')
 
 //app middleware
 app.use(bodyParser.json());
 app.use(cors());
 
 //use routes
-app.use(tutor)
+app.use(tutor);
 app.use(studentMg)
 app.use(classMg);
-app.use(eventMg)
+app.use(eventMg);
+app.use(classFee);
 
 
 
