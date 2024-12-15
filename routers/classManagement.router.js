@@ -46,9 +46,9 @@ router.post("/smsBK/classMgSave", async (req, res) => {
 router.put("/smsBK/classMGtUpdate", async (req, res) => {
   try {
       // Extract the ID from the request body
-      const { ctId, ...updateData } = req.body;
+      const { cId, ...updateData } = req.body;
 
-      if (!ctId) {
+      if (!cId) {
           return res.status(400).json({
               message: "class ctId is required",
           });
@@ -56,7 +56,7 @@ router.put("/smsBK/classMGtUpdate", async (req, res) => {
 
       // Update the class using the ctId from the body
       const updatedClass = await classMg.findByIdAndUpdate(
-          ctId,
+          cId,
           { $set: updateData },
           { new: true } // Return the updated document
       );
