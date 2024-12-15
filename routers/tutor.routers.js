@@ -9,7 +9,7 @@ router.post("/smsBK/tutorSave", async (req, res) => {
       let tutorSave = new tutor(req.body);
       await tutorSave.save();
       return res.status(200).json({
-        success: "tutor is saved successfully",
+        message: "tutor is saved successfully",
       });
     } catch (err) {
       return res.status(400).json({
