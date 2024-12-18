@@ -50,7 +50,7 @@ router.put("/smsBK/classMGtUpdate", async (req, res) => {
 
       if (!cId) {
           return res.status(400).json({
-              message: "class ctId is required",
+              message: "class cId is required",
           });
       }
 
