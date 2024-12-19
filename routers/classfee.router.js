@@ -34,7 +34,7 @@ router.post("/classFee", async (req, res) => {
   }
 });
 
-// *? Update Class Fee by ID
+// *? Update Class fee by ID
 router.put("/classFee/:id", async (req, res) => {
   try {
     const updatedClassFee = await classFee.findOneAndUpdate(
