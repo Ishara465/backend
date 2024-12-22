@@ -28,6 +28,7 @@ const studentMg = require('./routers/student.router')
 const classMg = require('./routers/classManagement.router')
 const eventMg = require('./routers/eventMg.router')
 const login = require('./routers/loginAdmin.router')
+const classFee = require('./routers/classFee.router')
 
 //app middleware
 app.use(bodyParser.json());
@@ -39,7 +40,7 @@ app.use(studentMg)
 app.use(classMg);
 app.use(eventMg)
 app.use(login)
-
+app.use(classFee);
 
 
 //connect DB port and link
