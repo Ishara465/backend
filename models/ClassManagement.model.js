@@ -2,7 +2,15 @@ const mongoose = require("mongoose");
 
 
 const classMGSchema = new mongoose.Schema({
-   
+
+    _id:{
+        type: Number,
+        required: true,
+    },
+    cId:{
+        type: Number,
+        required: true,
+    },
     className:{
         type:String,
         required:true,
@@ -34,15 +42,15 @@ const classMGSchema = new mongoose.Schema({
         required:true,
     },
     day:{
-        type:Date,
+        type:String,
         required:true
     },
     startTime:{
-        type:Date,
+        type:String,
         required:true
     },
     endTime:{
-        type:Date,
+        type:String,
         required:true,
     },
     classRoom:{
@@ -50,6 +58,25 @@ const classMGSchema = new mongoose.Schema({
         required:true,
     }
 })
+
+classMGSchema.pre("validate",async function(next){
+    if(this.isNew){
+        try{
+            const lastClasses = await mongoose
+                .model("classMg")
+                .findOne({})
+                .sort({_id:-1})
+
+            const nextId =lastClasses ? lastClasses._id +1:1;
+            this._id = nextId;
+            this.cId = nextId;
+        }catch(err){
+            return next(err)
+        }
+    }
+    next();
+})
+
 
 const classMGModel = mongoose.model("classMg",classMGSchema);
 module.exports = classMGModel;

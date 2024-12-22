@@ -9,7 +9,7 @@ router.post("/smsBK/tutorSave", async (req, res) => {
       let tutorSave = new tutor(req.body);
       await tutorSave.save();
       return res.status(200).json({
-        success: "tutor is saved successfully",
+        message: "tutor is saved successfully",
       });
     } catch (err) {
       return res.status(400).json({
@@ -20,30 +20,67 @@ router.post("/smsBK/tutorSave", async (req, res) => {
 
   // *? Update user by ID
 
-router.put("/smsBK/tutorUpdate/:id", async (req, res) => {
-    try {
-      const updatedTutor = await tutor.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true } // Return the updated document
-      );
+// router.put("/smsBK/tutorUpdate/:id", async (req, res) => {
+//     try {
+//       const updatedTutor = await tutor.findByIdAndUpdate(
+//         req.params.id,
+//         { $set: req.body },
+//         { new: true } // Return the updated document
+//       );
   
-      if (!updatedTutor) {
-        return res.status(404).json({
-          message: "tutor not found",
-        });
+//       if (!updatedTutor) {
+//         return res.status(404).json({
+//           message: "tutor not found",
+//         });
+//       }
+  
+//       return res.status(200).json({
+//         success: "tutor data updated successfully",
+//         updatedTutor,
+//       });
+//     } catch (err) {
+//       return res.status(400).json({
+//         error: err.message,
+//       });
+//     }
+//   });
+
+//  Update student by body
+router.put("/smsBK/tutorUpdate", async (req, res) => {
+  try {
+      // Extract the ID from the request body
+      const { tId, ...updateData } = req.body;
+
+      if (!tId) {
+          return res.status(400).json({
+              message: "Tutor tId is required",
+          });
       }
-  
+
+      // Update the student using the stId from the body
+      const updatedTutor = await tutor.findByIdAndUpdate(
+          tId,
+          { $set: updateData },
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedTutor) {
+          return res.status(404).json({
+              message: "tutor not found",
+          });
+      }
+
       return res.status(200).json({
-        success: "tutor data updated successfully",
-        updatedTutor,
+          message: "tutor data updated successfully",
+          updatedTutor,
       });
-    } catch (err) {
+  } catch (err) {
       return res.status(400).json({
-        error: err.message,
+          error: err.message,
       });
-    }
-  });
+  }
+});
+
 
 // ? Get Tutor
 
@@ -51,8 +88,10 @@ router.get("/smsBK/getAllTutors", async (req, res) => {
   try {
     const getTutors = await tutor.find().exec();
     return res.status(200).json({
-      success: true,
-      tutorsAllData: getTutors,
+      code : res.statusCode,
+      message: "tutor data get success",
+      content: getTutors,
+
     });
   } catch (err) {
     return res.status(400).json({

@@ -50,11 +50,11 @@ studentMGSchema.pre("validate", async function (next) {
        const lastStudent = await mongoose
          .model("studentMG")
          .findOne({})
-         .sort({ _id: -1 }); // Find the last document by `_id`
+         .sort({ _id: -1 }); // Find the last document by _id
  
-       const nextId = lastStudent ? lastStudent._id + 1 : 1; // Increment `_id` or start at 1
-       this._id = nextId; // Set `_id`
-       this.stId = nextId; // Set `stId`
+       const nextId = lastStudent ? lastStudent._id + 1 : 1; // Increment _id or start at 1
+       this._id = nextId; // Set _id
+       this.stId = nextId; // Set stId
      } catch (error) {
        return next(error);
      }

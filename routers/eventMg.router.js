@@ -19,28 +19,64 @@ router.post("/smsBK/eventMgSave", async (req, res) => {
 });
 
 // ? eventMg update
-router.put("/smsBK/eventMgUpdate/:id", async (req, res) => {
+// router.put("/smsBK/eventMgUpdate/:id", async (req, res) => {
+//   try {
+//     const eventUpdate = await eventMg.findByIdAndUpdate(
+//       req.params.id,
+//       { $set: req.body },
+//       { new: true }
+//     );
+//     if (!eventUpdate) {
+//       return res.status(404).json({
+//         message: "event not found",
+//       });
+//     }
+//     return res.status(200).json({
+//       message: "event data updated successfully",
+//       eventUpdate,
+//     });
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: err.message,
+//     });
+//   }
+// });
+//  Update student by body
+router.put("/smsBK/eventUpdate", async (req, res) => {
   try {
-    const eventUpdate = await eventMg.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    if (!eventUpdate) {
-      return res.status(404).json({
-        message: "event not found",
+      // Extract the ID from the request body
+      const { eId, ...updateData } = req.body;
+
+      if (!eId) {
+          return res.status(400).json({
+              message: "Event eId is required",
+          });
+      }
+
+      // Update the student using the stId from the body
+      const updatedEvent = await eventMg.findByIdAndUpdate(
+          eId,
+          { $set: updateData },
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedEvent) {
+          return res.status(404).json({
+              message: "Event not found",
+          });
+      }
+
+      return res.status(200).json({
+          message: "Event data updated successfully",
+          updatedEvent,
       });
-    }
-    return res.status(200).json({
-      message: "event data updated successfully",
-      eventUpdate,
-    });
   } catch (err) {
-    return res.status(400).json({
-      error: err.message,
-    });
+      return res.status(400).json({
+          error: err.message,
+      });
   }
 });
+
 
 //  ? Get All events
 router.get("/smsBK/getAllEvents", async (req, res) => {
