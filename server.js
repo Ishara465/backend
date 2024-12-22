@@ -1,33 +1,32 @@
-const bodyParser = require("body-parser");//
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+// Import routers
+const tutorRouter = require("./routers/tutor.routers");
+const studentRouter = require("./routers/student.router");
+const classRouter = require("./routers/classManagement.router");
+const eventRouter = require("./routers/eventMg.router");
+const classFeeRouter = require("./routers/classFee.router");
+const authRouter = require("./routers/loginAdmin.router"); // Add this import for login routes
+
 const app = express();
 
-//import routers
-const tutor = require('./routers/tutor.routers')
-const studentMg = require('./routers/student.router')
-const classMg = require('./routers/classManagement.router')
-const eventMg = require('./routers/eventMg.router')
-const classFee = require('./routers/classFee.router')
-
-//app middleware
-app.use(bodyParser.json());
+// Middleware
+app.use(express.json()); // Replaces body-parser with express.json()
 app.use(cors());
 
-//use routes
-app.use(tutor);
-app.use(studentMg)
-app.use(classMg);
-app.use(eventMg);
-app.use(classFee);
+// Use routes
+app.use("/smsBK", authRouter);
+app.use("/tutor", tutorRouter);
+app.use("/student", studentRouter);
+app.use("/class", classRouter);
+app.use("/event", eventRouter);
+app.use("/classfee", classFeeRouter);
 
-
-
-//connect DB port and link
-const PORT = 8000;
-const DB_URL = "mongodb://127.0.0.1:27017/smsDB";
+// Connect to the DB
+const PORT = process.env.PORT || 8000;
+const DB_URL = process.env.DB_URL || "mongodb://127.0.0.1:27017/smsDB"; // Update with your DB URL
 
 mongoose
   .connect(DB_URL)
