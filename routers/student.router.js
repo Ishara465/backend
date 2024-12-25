@@ -9,6 +9,7 @@ const attendanceSchema = new mongoose.Schema({
   stId: { type: String, required: true },
   stname: { type: String, required: true },
   stEmail: { type: String, required: true },
+  className: { type: String, required: true }, // Added className
   createdAt: { type: Date, default: Date.now },
 });
 
@@ -124,30 +125,37 @@ router.get("/smsBK/getStudentById/:id", async (req, res) => {
 });
 
 // *? Submit Attendance
+// *? Submit Attendance
 router.post("/smsBK/submitAttendance", async (req, res) => {
   try {
-    const { attendanceData } = req.body;
+    const { className, students } = req.body;
 
-    // Check if the attendanceData array is provided and not empty
-    if (!attendanceData || attendanceData.length === 0) {
+    // Validate input
+    if (!className || !students || !Array.isArray(students) || students.length === 0) {
       return res.status(400).json({
-        message: "No attendance data provided.",
+        message: "Invalid attendance data. Please provide a class name and student list.",
       });
     }
 
-    // Loop through each attendance record in the array
-    for (const record of attendanceData) {
-      const { stId, stname, stEmail } = record;
+    // Loop through the student records and save them
+    for (const student of students) {
+      const { stId, stname, stEmail } = student;
 
-      // Validate each record
+      // Validate each student record
       if (!stId || !stname || !stEmail) {
         return res.status(400).json({
-          message: "Incomplete attendance data for one or more students.",
+          message: `Incomplete data for student with ID: ${stId || "unknown"}`,
         });
       }
 
-      // Save each attendance record
-      const attendance = new AttendanceModel({ stId, stname, stEmail });
+      // Save each attendance record with the class name
+      const attendance = new AttendanceModel({ 
+        stId, 
+        stname, 
+        stEmail, 
+        className 
+        // attendanceDate is not passed, Mongoose will set it automatically
+      });
       await attendance.save();
     }
 
@@ -160,6 +168,7 @@ router.post("/smsBK/submitAttendance", async (req, res) => {
     });
   }
 });
+
 
 // *? Get All Attendance Records
 router.get("/smsBK/getAllAttendance", async (req, res) => {
