@@ -175,8 +175,9 @@ router.get("/smsBK/getAllAttendance", async (req, res) => {
   try {
     const attendanceRecords = await AttendanceModel.find().exec();
     return res.status(200).json({
+      code: res.statusCode,
       message: "Attendance records retrieved successfully",
-      attendanceRecords,
+      content: attendanceRecords,
     });
   } catch (err) {
     return res.status(400).json({
